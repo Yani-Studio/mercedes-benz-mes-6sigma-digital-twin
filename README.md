@@ -19,11 +19,9 @@
 
 Below is the **live demonstration video** of the Streamlit control dashboard, showing dynamic GA population tuning ($10\text{M} \sim 65.30\text{M}$), real-time bi-directional telemetry logging between Apple MacBook Pro and DGX Spark cluster, and 6-Sigma SPC parameter sync:
 
-https://github.com/user-attachments/assets/streamlit_demo_simulation.mp4
+https://github.com/user-attachments/assets/360fdc9a-a60f-41e0-b068-a64bfcbc7416
 
-> **Note**: If video rendering is restricted by your browser, you can also view the raw recording directly at [`visualization/streamlit_demo_simulation.mp4`](visualization/streamlit_demo_simulation.mp4).
 
----
 
 ## 🏛️ 2. End-to-End System & Data Architecture
 
