@@ -3,12 +3,13 @@
 # 🚘 Mercedes-Benz MES 6-Sigma Digital Twin & AI Engine
 ### **65.30M Digital Twin Genetic Algorithm (GA), Multi-Stage Super Stacking Ensemble & 6-Sigma SPC Quality Control**
 
+[![MacBook Pro M5](https://img.shields.io/badge/MacBook%20Pro-M5-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macbook-pro/)
+[![DGX Spark 128GB RAM](https://img.shields.io/badge/DGX%20Spark-128GB%20RAM-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-zone)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Async%20REST-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![PyArrow Shared Memory](https://img.shields.io/badge/PyArrow-Shared%20Memory-E05D44?style=for-the-badge&logo=apache&logoColor=white)](https://arrow.apache.org/)
+[![gRPC & WebSockets](https://img.shields.io/badge/gRPC%20%26%20WebSockets-Bi--Directional-4285F4?style=for-the-badge)](https://grpc.io/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![NVIDIA GB10 GPU](https://img.shields.io/badge/NVIDIA%20CUDA-GB10%20Cluster-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-zone)
-[![Validation R2](https://img.shields.io/badge/Validation%20R%C2%B2-0.56979-brightgreen?style=for-the-badge)](#-32-model-predictive-accuracy--stacking-ensemble-performance)
-[![Bench Time Reduction](https://img.shields.io/badge/Bench%20Time--55.6%25-blueviolet?style=for-the-badge)](#-35-6-sigma-spc-quality-control--bench-time-reduction)
-[![Annual Economic Value](https://img.shields.io/badge/Annual%20Value-%E2%82%A9%2021.60B-success?style=for-the-badge)](#-33-financial-roi--esg-sustainability-impact)
-[![Executive ROI](https://img.shields.io/badge/ROI-1%2C480%25-ff69b4?style=for-the-badge)](#-33-financial-roi--esg-sustainability-impact)
+[![6-Sigma SPC](https://img.shields.io/badge/6--Sigma-SPC-00599E?style=for-the-badge)](#-35-6-sigma-spc-quality-control--bench-time-reduction)
 
 </div>
 
