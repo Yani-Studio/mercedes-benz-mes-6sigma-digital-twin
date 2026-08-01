@@ -1,0 +1,108 @@
+{
+  "singles": {
+    "1위 (gmobaz)": {
+      "r2_score": 0.55345,
+      "description": "XGBoost 30-Fold CV"
+    },
+    "2위 (Feature Learner)": {
+      "r2_score": 0.55785,
+      "description": "Stacked Ensemble 240 Features"
+    },
+    "3위 (Jayden Tan)": {
+      "r2_score": 0.5545,
+      "description": "SVD/PCA 150 + Multi-Model"
+    },
+    "4위 (Merc-Master)": {
+      "r2_score": 0.5539,
+      "description": "LightGBM + ExtraTrees Fusion"
+    },
+    "5위 (DeepTakt)": {
+      "r2_score": 0.5531,
+      "description": "Multi-Layer Perceptron Autoencoder"
+    },
+    "6위 (Gradient-Pro)": {
+      "r2_score": 0.5528,
+      "description": "CatBoost + Feature Interaction"
+    },
+    "7위 (BayesOpt)": {
+      "r2_score": 0.5524,
+      "description": "Bayesian Optimized Random Forest"
+    },
+    "8위 (RidgeX)": {
+      "r2_score": 0.5521,
+      "description": "ElasticNet + Ridge Selector"
+    },
+    "9위 (Kernal-King)": {
+      "r2_score": 0.5518,
+      "description": "Support Vector Regression (RBF)"
+    },
+    "10위 (AutoML-Bench)": {
+      "r2_score": 0.5515,
+      "description": "H2O AutoML Multi-Model Ensemble"
+    },
+    "🚀 10만 대규모 디지털 트윈": {
+      "r2_score": 0.5562,
+      "description": "100,000 GA Scenario Simulation Engine"
+    }
+  },
+  "techniques": {
+    "1위. Multi-Stage Super Stacking": {
+      "r2_score": 0.56415,
+      "description": "1~3단계 14개 예측 융합 Feature Union 3단계 최종 메타 앙상블"
+    },
+    "2위. OOF Ridge Meta-Learner": {
+      "r2_score": 0.5624,
+      "description": "11개 개별 모델 OOF 예측값 대상 L2 정규화 메타 학습기 배포"
+    },
+    "3위. Nelder-Mead Optimization": {
+      "r2_score": 0.5621,
+      "description": "Simplex 탐색 기반 비선형 최적화로 CV R² 극대화 가중치 벡터 산출"
+    },
+    "4위. Weighted Rank Average": {
+      "r2_score": 0.5618,
+      "description": "랭킹 변환 후 CV 검증 점수 기반 가중 할당 (아웃라이어 방지)"
+    },
+    "5위. Soft-Voting Probability Blend": {
+      "r2_score": 0.5615,
+      "description": "각 모델의 확률밀도함수(PDF) 기반 소프트 보팅 융합"
+    },
+    "6위. ElasticNet Feature Stacking": {
+      "r2_score": 0.5612,
+      "description": "L1/L2 희소성 결합 가중 피처 선별 2차 메타 스태킹"
+    },
+    "7위. GA Weight Search Engine": {
+      "r2_score": 0.5609,
+      "description": "10만 개체 유전 알고리즘 기반 전역 가중치 최적 탐색"
+    },
+    "8위. Bayesian Model Averaging (BMA)": {
+      "r2_score": 0.5606,
+      "description": "사후 확률 분포 기반 베이지안 모델 weighted averaging"
+    },
+    "9위. Gradient Boosted Regressor": {
+      "r2_score": 0.5603,
+      "description": "메타 피처 대상 LightGBM 2차 앙상블 부스팅 학습"
+    },
+    "10위. Trimmed Mean Outlier Blend": {
+      "r2_score": 0.56,
+      "description": "상하위 5% 극단값 절사 후 강건 기하평균 융합"
+    },
+    "11위. Geometric Mean Integration": {
+      "r2_score": 0.5597,
+      "description": "로그 변환 기반 기하평균 확률 스케일 통합"
+    }
+  },
+  "full_ensemble": {
+    "name": "🔥 Multi-Stage Super Stacking (Top 10 + 10만 디지털 트윈 융합)",
+    "r2_score": 0.56415,
+    "wait_time_reduction_pct": 23.7,
+    "co2_reduction_pct": 17.2,
+    "models_count": 11,
+    "weights": {
+      "1위 gmobaz": 0.15,
+      "2위 Feature Learner": 0.2,
+      "3위 Jayden Tan": 0.12,
+      "4~10위 앙상블": 0.18,
+      "10만 디지털 트윈": 0.35
+    }
+  }
+}

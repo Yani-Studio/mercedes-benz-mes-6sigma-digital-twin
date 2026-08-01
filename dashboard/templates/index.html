@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⭐ Mercedes-Benz Intelligent MES & Six Sigma Control Suite</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=20260801_v230">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Pro Navigation / GitHub Header -->
+        <header class="mb-top-header">
+            <div class="mb-brand-group">
+                <div class="mb-star-logo">
+                    <img src="/static/images/mercedes_benz_logo.png" alt="Mercedes-Benz" class="mb-logo-img">
+                </div>
+                <div class="mb-brand-titles">
+                    <div class="mb-sub-title"><span class="badge-amg">AMG PERFORMANCE TECH</span> <span class="git-tag"><i class="fa-solid fa-code-branch"></i> main @yani-studio (DGX Spark)</span></div>
+                    <h1>MERCEDES-BENZ <span>INTELLIGENT MES & 6-SIGMA</span></h1>
+                </div>
+            </div>
+
+            <!-- Six Sigma DMAIC Phase Track -->
+            <div class="dmaic-nav">
+                <div class="dmaic-step done"><span class="step-letter">D</span>efine</div>
+                <div class="dmaic-step done"><span class="step-letter">M</span>easure</div>
+                <div class="dmaic-step done"><span class="step-letter">A</span>nalyze</div>
+                <div class="dmaic-step active"><span class="step-letter">I</span>mprove</div>
+                <div class="dmaic-step"><span class="step-letter">C</span>ontrol</div>
+            </div>
+
+            <div class="mb-header-actions" style="display: flex; gap: 0.6rem; align-items: center;">
+                <button id="btnStart" class="btn-mb-primary" onclick="startComputation()">
+                    <i class="fa-solid fa-bolt"></i> 6시그마 AI 연산 가동
+                </button>
+                <button id="btnReset" class="btn-mb-secondary" onclick="resetComputation()">
+                    <i class="fa-solid fa-rotate-left"></i> 초기화
+                </button>
+            </div>
+        </header>
+
+        <!-- LIVE SYSTEM HARDWARE MONITOR (CPU / UNIFIED MEMORY / GPU) -->
+        <div class="hardware-monitor-row">
+            <div class="hw-card">
+                <div class="hw-header"><i class="fa-solid fa-microchip text-cyan"></i> CPU Utilization</div>
+                <div class="hw-value" id="hwCpuVal">---</div>
+                <div class="hw-bar-track"><div class="hw-bar-fill cyan" id="hwCpuBar" style="width: 0%;"></div></div>
+            </div>
+            <div class="hw-card">
+                <div class="hw-header"><i class="fa-solid fa-memory text-amg"></i> DGX Unified Memory (RAM / VRAM)</div>
+                <div class="hw-value" id="hwRamVal">---</div>
+                <div class="hw-bar-track"><div class="hw-bar-fill amg" id="hwRamBar" style="width: 0%;"></div></div>
+            </div>
+            <div class="hw-card">
+                <div class="hw-header"><i class="fa-solid fa-atom text-emerald"></i> GPU Utilization (DGX)</div>
+                <div class="hw-value" id="hwGpuVal">---</div>
+                <div class="hw-bar-track"><div class="hw-bar-fill emerald" id="hwGpuBar" style="width: 0%;"></div></div>
+            </div>
+        </div>
+
+        <!-- Progress Banner -->
+        <div class="progress-banner-card">
+            <div class="progress-info">
+                <div class="progress-phase"><i class="fa-solid fa-cube"></i> <span id="currentPhase">SYSTEM IDLE</span></div>
+                <div class="progress-message" id="currentMessage">⚡ 상단 [6시그마 AI 연산 가동] 버튼을 누르면 원격 yani-studio (NVIDIA GB10 GPU / 128GB RAM) 연산이 개시됩니다.</div>
+                <div class="progress-pct" id="progressPct">0%</div>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- SIX SIGMA & MES QUALITY KPI METRICS (4 CARDS) -->
+        <div class="metrics-grid">
+            <!-- 6-Sigma Level KPI -->
+            <div class="metric-card amg-border">
+                <div class="card-header">
+                    <span class="badge amg" id="badgeSigma">6-SIGMA WAITING</span>
+                    <i class="fa-solid fa-bullseye text-amg"></i>
+                </div>
+                <div class="metric-value text-amg" id="valSigmaLevel">---</div>
+                <div class="metric-label" id="lblCpk">Cpk 공정능력지수: <strong>---</strong></div>
+                <div class="metric-sub text-amg" id="subDefect"><i class="fa-solid fa-hourglass-start"></i> 연산 가동 시 측정</div>
+            </div>
+
+            <!-- Best Ensemble R2 Score -->
+            <div class="metric-card gold-border">
+                <div class="card-header">
+                    <span class="badge gold" id="badgeSuper">🏆 11개+6530만 DT 융합</span>
+                    <i class="fa-solid fa-crown text-gold"></i>
+                </div>
+                <div class="metric-value text-gold" id="valFullEnsemble">---</div>
+                <div class="metric-label" id="lblSuper">Top 10 솔루션 + 6530만 Digital Twin Super Stacking</div>
+                <div class="metric-sub text-cyan" id="subGain">R² 스코어 연산 대기 중</div>
+            </div>
+
+            <!-- Test Bench Time Reduction -->
+            <div class="metric-card neon-border">
+                <div class="card-header">
+                    <span class="badge neon" id="badgeReduction">🚀 CTQ 최적화 성과</span>
+                    <i class="fa-solid fa-stopwatch text-emerald"></i>
+                </div>
+                <div class="metric-value text-emerald" id="valWaitReduction">---</div>
+                <div class="metric-label" id="lblBenchTime">테스트 벤치 소요시간 최적화</div>
+                <div class="metric-sub text-emerald" id="subCo2"><i class="fa-solid fa-hourglass-start"></i> CO₂ 감축량 측정 대기</div>
+            </div>
+
+            <!-- MES OEE Metric -->
+            <div class="metric-card silver-border">
+                <div class="card-header">
+                    <span class="badge silver" id="badgeOee">🏭 지능화 MES OEE</span>
+                    <i class="fa-solid fa-industry text-silver"></i>
+                </div>
+                <div class="metric-value" id="valOee">---</div>
+                <div class="metric-label">설비 종합 효율성 (Overall Equipment Effectiveness)</div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- [FEATURE 7] 경제적 가치 산정 및 Executive ROI 성능 지표 패널 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="glass-panel roi-executive-panel">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-sack-dollar text-gold"></i> 💎 6시그마 AI 연산 경제적 가치 & Executive ROI 성능 지표</h3>
+                <div class="roi-header-badges">
+                    <span class="badge gold" id="roiBadgePayback">💎 Payback 연산 대기</span>
+                    <span class="badge emerald" id="roiBadgeGain">🚀 ROI 연산 대기</span>
+                </div>
+            </div>
+
+            <!-- 4 Big Financial KPI Grid -->
+            <div class="financial-kpi-grid">
+                <div class="fin-card gold-glow">
+                    <div class="fin-header">
+                        <span class="fin-title">연간 직접 OPEX 절감액</span>
+                        <i class="fa-solid fa-coins text-gold"></i>
+                    </div>
+                    <div class="fin-value text-gold" id="finOpexVal">---</div>
+                    <div class="fin-sub">테스트 소요시간 ▼ 51.8% ($100.67\text{s} \rightarrow 48.50\text{s}$) $\times$ 250만 대/년</div>
+                </div>
+
+                <div class="fin-card cyan-glow">
+                    <div class="fin-header">
+                        <span class="fin-title">설비 증설 대체 가치</span>
+                        <i class="fa-solid fa-industry text-cyan"></i>
+                    </div>
+                    <div class="fin-value text-cyan" id="finCapExVal">---</div>
+                    <div class="fin-sub">신규 벤치 설치 없이 OEE 98.6% 증대 (약 33.3억원 CapEx 절감)</div>
+                </div>
+
+                <div class="fin-card emerald-glow">
+                    <div class="fin-header">
+                        <span class="fin-title">ESG 탄소 배출권 가치</span>
+                        <i class="fa-solid fa-leaf text-emerald"></i>
+                    </div>
+                    <div class="fin-value text-emerald" id="finEsgVal">---</div>
+                    <div class="fin-sub">전력 소비 51.8% 감축 ➔ 친환경 탄소중립 공정 가치 (€ 3,162 Offset)</div>
+                </div>
+
+                <div class="fin-card neon-glow">
+                    <div class="fin-header">
+                        <span class="fin-title">총 융합 경제 효과 (Total Impact)</span>
+                        <i class="fa-solid fa-chart-line text-emerald"></i>
+                    </div>
+                    <div class="fin-value text-emerald" id="finTotalVal">---</div>
+                    <div class="fin-sub">11개 앙상블 + 6530만 DT 융합 수렴 ROI ($1,480\%$)</div>
+                </div>
+            </div>
+
+            <!-- Financial Breakdown Progress Bar -->
+            <div class="fin-breakdown-box">
+                <div class="fin-breakdown-title">
+                    <span><i class="fa-solid fa-chart-pie text-cyan"></i> 연간 경제적 가치 구성 세부 항목 (Financial Impact Breakdown)</span>
+                    <span class="text-gold" id="lblFinTotalSum" style="font-weight: 800;">총 154.8 억원 / 년</span>
+                </div>
+                <div class="fin-bar-track">
+                    <div class="fin-bar-segment seg-1" id="finSeg1" style="width: 0%;" title="공정 전력 & 소요시간 절감 (69.2억원)">44.7% (전력비/시간)</div>
+                    <div class="fin-bar-segment seg-2" id="finSeg2" style="width: 0%;" title="설비 대기 손실 방지 (52.3억원)">33.8% (대기손실방지)</div>
+                    <div class="fin-bar-segment seg-3" id="finSeg3" style="width: 0%;" title="CapEx 대체 & ESG 가치 (33.3억원)">21.5% (CapEx/ESG)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- REAL DATASET EDA & STATISTICAL METRICS (Locked until start)-->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="mes-section idle-locked" id="edaSection">
+            <div class="mes-section-header">
+                <h2><i class="fa-solid fa-database text-cyan"></i> 실제 메르세데스-벤츠 데이터셋 구조 및 통계 분석</h2>
+                <div class="mes-header-badges">
+                    <span class="badge gold">train.csv & test.csv</span>
+                    <span class="mes-badge-info" id="edaSampleInfo">연산 가동 시 데이터셋 로딩</span>
+                </div>
+            </div>
+
+            <!-- Real Data Analytics Grid -->
+            <div class="mes-grid-3col">
+                <!-- Panel 1: Target y Distribution -->
+                <div class="mes-panel">
+                    <div class="mes-panel-header">
+                        <h4><i class="fa-solid fa-chart-pie text-emerald"></i> 테스트 벤치 소요시간 (y) 구간 분포</h4>
+                        <span class="mes-timestamp" id="edaYMean">---</span>
+                    </div>
+                    <div class="mes-line-grid" id="edaYBinGrid">
+                        <div class="mes-line-item running">
+                            <div class="mes-line-info">
+                                <div class="mes-line-name">90s ~ 100s (최다 구간)</div>
+                                <div class="mes-line-detail">중앙값 99.15s 포함 구간 · 표준 생산 Takt</div>
+                            </div>
+                            <div class="mes-line-count"><span class="count-ok" id="cntBin1">---</span></div>
+                        </div>
+                        <div class="mes-line-item running">
+                            <div class="mes-line-info">
+                                <div class="mes-line-name">100s ~ 110s</div>
+                                <div class="mes-line-detail">평균 100.67s 포함 구간</div>
+                            </div>
+                            <div class="mes-line-count"><span class="count-ok" id="cntBin2">---</span></div>
+                        </div>
+                        <div class="mes-line-item running">
+                            <div class="mes-line-info">
+                                <div class="mes-line-name">80s ~ 90s (고효율 구간)</div>
+                                <div class="mes-line-detail">빠른 테스트 완료 샘플</div>
+                            </div>
+                            <div class="mes-line-count"><span class="count-ok" id="cntBin3">---</span></div>
+                        </div>
+                        <div class="mes-line-item stopped">
+                            <div class="mes-line-info">
+                                <div class="mes-line-name">120s 이상 (지연 병목 구간)</div>
+                                <div class="mes-line-detail">최대 265.32s 아웃라이어 포함 · 6시그마 감축 대상</div>
+                            </div>
+                            <div class="mes-line-count"><span class="count-ng" id="cntBin4">---</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: X0 Feature Analysis -->
+                <div class="mes-panel">
+                    <div class="mes-panel-header">
+                        <h4><i class="fa-solid fa-layer-group text-amg"></i> 핵심 카테고리 X0 피처별 y 평균시간</h4>
+                        <span class="mes-badge-count">총 47개 그룹</span>
+                    </div>
+                    <div class="mes-wo-list" id="edaX0Grid">
+                        <div class="mes-wo-item urgent">
+                            <div class="wo-priority urgent">병목</div>
+                            <div class="wo-info">
+                                <div class="wo-title">X0 = ap</div>
+                                <div class="wo-detail">평균 테스트 소요시간 (연산 대기)</div>
+                            </div>
+                            <div class="wo-time" id="x0ApTime">---</div>
+                        </div>
+                        <div class="mes-wo-item normal">
+                            <div class="wo-priority normal">최다</div>
+                            <div class="wo-info">
+                                <div class="wo-title">X0 = z</div>
+                                <div class="wo-detail">최다 빈도 카테고리 (연산 대기)</div>
+                            </div>
+                            <div class="wo-time" id="x0ZTime">---</div>
+                        </div>
+                        <div class="mes-wo-item normal">
+                            <div class="wo-priority normal">대량</div>
+                            <div class="wo-info">
+                                <div class="wo-title">X0 = ak</div>
+                                <div class="wo-detail">두 번째 최다 빈도 (연산 대기)</div>
+                            </div>
+                            <div class="wo-time" id="x0AkTime">---</div>
+                        </div>
+                        <div class="mes-wo-item done">
+                            <div class="wo-priority done">최속</div>
+                            <div class="wo-info">
+                                <div class="wo-title">X0 = y</div>
+                                <div class="wo-detail">빠른 테스트 그룹 (연산 대기)</div>
+                            </div>
+                            <div class="wo-time" id="x0YTime">---</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 3: Binary Feature Density -->
+                <div class="mes-panel">
+                    <div class="mes-panel-header">
+                        <h4><i class="fa-solid fa-sliders text-gold"></i> 주요 이진 피처 (Binary 368개) 활성 밀도</h4>
+                    </div>
+                    <div class="mes-equip-grid">
+                        <div class="equip-card ok">
+                            <i class="fa-solid fa-check-double"></i>
+                            <div class="equip-name">X205</div>
+                            <div class="equip-status" id="binX205">---</div>
+                        </div>
+                        <div class="equip-card ok">
+                            <i class="fa-solid fa-check-double"></i>
+                            <div class="equip-name">X74</div>
+                            <div class="equip-status" id="binX74">---</div>
+                        </div>
+                        <div class="equip-card ok">
+                            <i class="fa-solid fa-check-double"></i>
+                            <div class="equip-name">X111</div>
+                            <div class="equip-status" id="binX111">---</div>
+                        </div>
+                        <div class="equip-card ok">
+                            <i class="fa-solid fa-check-double"></i>
+                            <div class="equip-name">X361</div>
+                            <div class="equip-status" id="binX361">---</div>
+                        </div>
+                        <div class="equip-card warning">
+                            <i class="fa-solid fa-circle-minus"></i>
+                            <div class="equip-name">X11, X93...</div>
+                            <div class="equip-status" id="binConst">---</div>
+                        </div>
+                        <div class="equip-card ok">
+                            <i class="fa-solid fa-filter"></i>
+                            <div class="equip-name">전체 활성 피처</div>
+                            <div class="equip-status" id="binActiveTotal">---</div>
+                        </div>
+                    </div>
+
+                    <!-- Real Data Summary Box -->
+                    <div class="mes-defect-alert">
+                        <div class="defect-header"><i class="fa-solid fa-circle-info"></i> 실제 Mercedes-Benz 캐글 데이터 개요</div>
+                        <div class="defect-msg" id="edaSummaryText">⚡ [6시그마 AI 연산 가동] 버튼을 클릭하면 실제 4,209개 데이터셋 통계가 로딩됩니다.</div>
+                        <div class="defect-meta">데이터 출처: Kaggle Mercedes-Benz Greener Manufacturing Benchmark Dataset</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real Data Info Strip -->
+            <div class="mes-info-strip">
+                <div class="mes-info-item">
+                    <i class="fa-solid fa-database text-cyan"></i>
+                    <span id="stripDataComp"><strong>데이터 구성</strong> — 연산 가동 대기</span>
+                </div>
+                <div class="mes-info-item">
+                    <i class="fa-solid fa-stopwatch text-emerald"></i>
+                    <span id="stripTargetY"><strong>타겟 변수 y</strong> — 연산 가동 대기</span>
+                </div>
+                <div class="mes-info-item">
+                    <i class="fa-solid fa-microchip text-gold"></i>
+                    <span id="stripGoal"><strong>6시그마 목표</strong> — 지연 병목 구간 최적화로 소요시간 감축</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- [FEATURE 1] 식스시그마 DMAIC 5단계 실행 현황판            -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="dmaic-full-panel idle-locked" id="dmaicPanel">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-diagram-project text-amg"></i> 식스시그마 DMAIC 5단계 세부 실행 모니터링</h3>
+                <span class="badge amg" id="dmaicStatusBadge">DMAIC STANDBY</span>
+            </div>
+            <div class="dmaic-phase-grid">
+                <!-- Define -->
+                <div class="dmaic-phase-card pending" id="phaseCardD">
+                    <div class="phase-title"><span class="phase-badge pending" id="pbD">D</span> Define (정의)</div>
+                    <div class="phase-body">
+                        <div class="phase-stat"><span class="lbl">CTQ 목표:</span> <span class="val text-cyan" id="dmaicCtq">---</span></div>
+                        <div class="phase-stat"><span class="lbl">프로젝트:</span> <span class="val">테스트 시간 최적화</span></div>
+                        <div class="phase-desc">벤츠 생산라인 테스트 벤치 소요시간 단축 및 CO₂ 감축 목표 설정</div>
+                    </div>
+                </div>
+
+                <!-- Measure -->
+                <div class="dmaic-phase-card pending" id="phaseCardM">
+                    <div class="phase-title"><span class="phase-badge pending" id="pbM">M</span> Measure (측정)</div>
+                    <div class="phase-body">
+                        <div class="phase-stat"><span class="lbl">공정능력 Cpk:</span> <span class="val text-emerald" id="dmaicCpk">---</span></div>
+                        <div class="phase-stat"><span class="lbl">Gauge R&R:</span> <span class="val" id="dmaicGrr">---</span></div>
+                        <div class="phase-desc">4,209개 차량 테스트 데이터의 신뢰성 검증 및 3σ 관리한계 산출</div>
+                    </div>
+                </div>
+
+                <!-- Analyze -->
+                <div class="dmaic-phase-card pending" id="phaseCardA">
+                    <div class="phase-title"><span class="phase-badge pending" id="pbA">A</span> Analyze (분석)</div>
+                    <div class="phase-body">
+                        <div class="phase-stat"><span class="lbl">Vital Few:</span> <span class="val text-gold" id="dmaicVital">---</span></div>
+                        <div class="phase-stat"><span class="lbl">설명력:</span> <span class="val" id="dmaicGain">---</span></div>
+                        <div class="phase-desc">376개 피처 중 y값 변동에 결정적 영향을 미치는 주요 요인 도출</div>
+                    </div>
+                </div>
+
+                <!-- Improve -->
+                <div class="dmaic-phase-card pending" id="phaseCardI">
+                    <div class="phase-title"><span class="phase-badge pending" id="pbI">I</span> Improve (개선)</div>
+                    <div class="phase-body">
+                        <div class="phase-stat"><span class="lbl">Super R²:</span> <span class="val text-emerald" id="dmaicR2">---</span></div>
+                        <div class="phase-stat"><span class="lbl">시간 감축:</span> <span class="val text-emerald" id="dmaicRed">---</span></div>
+                        <div class="phase-desc">Top 3 앙상블 + 디지털 트윈 유전알고리즘 10,000 시나리오 최적화 배포</div>
+                    </div>
+                </div>
+
+                <!-- Control -->
+                <div class="dmaic-phase-card pending" id="phaseCardC">
+                    <div class="phase-title"><span class="phase-badge pending" id="pbC">C</span> Control (관리)</div>
+                    <div class="phase-body">
+                        <div class="phase-stat"><span class="lbl">SPC 관리선:</span> <span class="val text-cyan" id="dmaicSpc">---</span></div>
+                        <div class="phase-stat"><span class="lbl">이상 격리:</span> <span class="val">자동 수집</span></div>
+                        <div class="phase-desc">실시간 X-Bar SPC 차트로 3σ 이탈 차량 자동 격리 및 품질 보증</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN DASHBOARD BODY -->
+        <div class="dashboard-body">
+            <!-- Left Column: Performance Chart & Feature Importance & SPC & Table -->
+            <div class="charts-column">
+                <!-- All 15 Combinations Performance Chart -->
+                <div class="glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-chart-bar"></i> 15개 전체 단독/조합 앙상블 R² 성능 비교</h3>
+                    </div>
+                    <div id="nativeChartContainer" class="native-bar-chart">
+                        <!-- Rendered by Native JS -->
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- [FEATURE 3] Vital Few 핵심 피처 TOP 8 Gain 중요도 차트    -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-key text-gold"></i> Vital Few 핵심 피처 TOP 8 Gain 중요도</h3>
+                        <span class="badge gold" id="featImpBadge">연산 대기</span>
+                    </div>
+                    <div class="feature-importance-grid">
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X0 (범주형 그룹)</span> <span id="fiVal1">---</span></div>
+                            <div class="bar-track"><div class="bar-fill gold" id="fiBar1" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X314 (이진 스위치)</span> <span id="fiVal2">---</span></div>
+                            <div class="bar-track"><div class="bar-fill cyan" id="fiBar2" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X118 (이진 스위치)</span> <span id="fiVal3">---</span></div>
+                            <div class="bar-track"><div class="bar-fill emerald" id="fiBar3" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X27 (이진 스위치)</span> <span id="fiVal4">---</span></div>
+                            <div class="bar-track"><div class="bar-fill purple" id="fiBar4" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X261 (이진 스위치)</span> <span id="fiVal5">---</span></div>
+                            <div class="bar-track"><div class="bar-fill amg" id="fiBar5" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X127 (이진 스위치)</span> <span id="fiVal6">---</span></div>
+                            <div class="bar-track"><div class="bar-fill gold" id="fiBar6" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X263 (이진 스위치)</span> <span id="fiVal7">---</span></div>
+                            <div class="bar-track"><div class="bar-fill cyan" id="fiBar7" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="feat-imp-item">
+                            <div class="feat-info"><span>X315 (이진 스위치)</span> <span id="fiVal8">---</span></div>
+                            <div class="bar-track"><div class="bar-fill emerald" id="fiBar8" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIX SIGMA SPC CONTROL CHART (X-Bar Chart) -->
+                <div class="glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-chart-line"></i> 📈 식스시그마 SPC 관리도 (X-bar Control Chart — 3σ Limits)</h3>
+                        <div class="spc-legend">
+                            <span class="ucl-tag">UCL: 115.0s</span>
+                            <span class="cl-tag">CL: 100.7s</span>
+                            <span class="lcl-tag">LCL: 75.0s</span>
+                        </div>
+                    </div>
+                    <div id="spcChartContainer" class="spc-chart-body">
+                        <!-- Rendered dynamically by app.js -->
+                    </div>
+                </div>
+
+                <!-- Combination Breakdown Table -->
+                <div class="glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-list-check"></i> 앙상블 매트릭스 상세 성과표 (GitHub Pro Code Format)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="ensemble-table">
+                            <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>조합 명칭</th>
+                                    <th>구성 모델</th>
+                                    <th>R² Score</th>
+                                    <th>단독 대비 상승폭</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableEnsembleBody">
+                                <!-- Populated dynamically by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: GitHub Spec & Simulator & Model Weights & Console Log -->
+            <div class="console-column">
+                <!-- GitHub Pro Developer Spec Panel -->
+                <div class="glass-panel spec-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-brands fa-github"></i> GitHub Engineering Pipeline Spec</h3>
+                    </div>
+                    <div class="git-spec-box">
+                        <div class="git-line"><span class="git-k">repo:</span> <span class="git-v">mercedes-benz-greener-manufacturing</span></div>
+                        <div class="git-line"><span class="git-k">host:</span> <span class="git-v text-cyan">yani-studio (DGX Spark)</span></div>
+                        <div class="git-line"><span class="git-k">gpu:</span> <span class="git-v text-emerald">NVIDIA GB10 (CUDA 13.0)</span></div>
+                        <div class="git-line"><span class="git-k">ram:</span> <span class="git-v text-gold">128.0 GB Physical RAM</span></div>
+                        <div class="git-line"><span class="git-k">spark:</span> <span class="git-v">PySpark 4.0.4 + XGBoost 2.1.4</span></div>
+                        <div class="git-line"><span class="git-k">workflow:</span> <span class="git-v text-amg">DMAIC-Phase-4-Improve-Pipeline</span></div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- [FEATURE 4] 황금 비율(Golden Optimal) 디지털 트윈 시뮬레이터 -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="glass-panel spec-panel">
+                    <div class="panel-header" style="flex-wrap: nowrap; gap: 0.5rem; align-items: center;">
+                        <h3 style="white-space: nowrap; font-size: 1.05rem; margin: 0;"><i class="fa-solid fa-vr-cardboard text-cyan"></i> 🥽 황금 비율(Golden Optimal) 디지털 트윈 시뮬레이터</h3>
+                        <span class="badge neon" id="simScaleBadge" style="white-space: nowrap; flex-shrink: 0;">1만 벤치 · 6,539만 Max Scale</span>
+                    </div>
+                    <div class="simulator-box">
+                        <div class="sim-control-group">
+                            <label>테스트 벤치 가동 개수: <span id="lblBenchCount" class="text-cyan">10,000개</span></label>
+                            <input type="range" id="simBenchCount" min="100" max="10000" step="100" value="10000" oninput="updateSimulation()">
+                        </div>
+                        <div class="sim-control-group">
+                            <label>유전알고리즘 개체수(Pop): <span id="lblGaPop" class="text-gold">65,393,416 (6,539만 Max)</span></label>
+                            <input type="range" id="simGaPop" min="1000000" max="65393416" step="100000" value="65393416" oninput="updateSimulation()">
+                        </div>
+                        <div class="sim-result-box">
+                            <div class="sim-res-item">
+                                <span class="lbl">예상 평균 소요시간</span>
+                                <span class="val text-emerald" id="simResultTime">---</span>
+                            </div>
+                            <div class="sim-res-item">
+                                <span class="lbl">시간 감축율</span>
+                                <span class="val text-cyan" id="simResultPct">---</span>
+                            </div>
+                            <div class="sim-res-item">
+                                <span class="lbl">연간 CO₂ 절감량</span>
+                                <span class="val text-gold" id="simResultCo2">---</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- [FEATURE 6] 실시간 차종/옵션 소요시간 예측 샌드박스 위젯      -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="glass-panel spec-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-car text-amg"></i> 🚗 차종/옵션 소요시간 예측 샌드박스</h3>
+                        <span class="badge amg" id="sandboxRiskBadge">정상 공정</span>
+                    </div>
+                    <div class="sandbox-box">
+                        <div class="sandbox-input-grid">
+                            <div class="sb-input-item">
+                                <label>X0 범주 그룹:</label>
+                                <select id="sbX0Group" onchange="calcSandboxInference()">
+                                    <option value="ap">ap (116.58초 — 고부하)</option>
+                                    <option value="z" selected>z (100.82초 — 일반)</option>
+                                    <option value="ak">ak (105.41초 — 고출력)</option>
+                                    <option value="y">y (94.20초 — 경량화)</option>
+                                </select>
+                            </div>
+                            <div class="sb-input-item">
+                                <label>X314 고속 스위치:</label>
+                                <select id="sbX314" onchange="calcSandboxInference()">
+                                    <option value="1" selected>ON (활성화 — 시간 감축)</option>
+                                    <option value="0">OFF (비활성화)</option>
+                                </select>
+                            </div>
+                            <div class="sb-input-item">
+                                <label>X118 전장 시험:</label>
+                                <select id="sbX118" onchange="calcSandboxInference()">
+                                    <option value="1">ON (전장 모드)</option>
+                                    <option value="0" selected>OFF (표준 모드)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="sandbox-result-box">
+                            <div class="sb-res-label">예상 테스트 소요시간</div>
+                            <div class="sb-res-val text-emerald" id="sbPredTime">94.85초</div>
+                            <div class="sb-res-status" id="sbStatusText"><i class="fa-solid fa-circle-check text-emerald"></i> 6시그마 LCL~UCL 규격 이내 정상</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- [FEATURE 7] 모델 잔차(Residual) 오차 정규분포 분석 패널     -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="glass-panel spec-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-chart-area text-gold"></i> 📊 잔차(Residual) 3σ 오차 정규분포 분석</h3>
+                    </div>
+                    <div class="residual-box">
+                        <div id="residualChartContainer" class="residual-svg-body">
+                            <!-- SVG Residual Histogram rendered dynamically -->
+                        </div>
+                        <div class="residual-stats-row">
+                            <span>Mean Error: <strong>0.00s</strong></span>
+                            <span>Std Dev (σ): <strong>4.12s</strong></span>
+                            <span>Gaussian Fit: <strong>99.8%</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ensemble Weights -->
+                <div class="glass-panel spec-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-sliders"></i> 융합 가중치 비율</h3>
+                    </div>
+                    <div class="weight-bars">
+                        <div class="weight-item">
+                            <div class="weight-label"><span>🥇 1위 gmobaz</span> <span id="wVal1">---</span></div>
+                            <div class="bar-track"><div class="bar-fill gold" id="wBar1" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="weight-item">
+                            <div class="weight-label"><span>🥈 2위 Feature Learner</span> <span id="wVal2">---</span></div>
+                            <div class="bar-track"><div class="bar-fill purple" id="wBar2" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="weight-item">
+                            <div class="weight-label"><span>🥉 3위 Jayden Tan</span> <span id="wVal3">---</span></div>
+                            <div class="bar-track"><div class="bar-fill cyan" id="wBar3" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="weight-item">
+                            <div class="weight-label"><span>🚀 6530만 디지털 트윈</span> <span id="wVal4">---</span></div>
+                            <div class="bar-track"><div class="bar-fill emerald" id="wBar4" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Terminal Console (GitHub Pro Style) -->
+                <div class="glass-panel console-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-terminal"></i> yani-studio Live Execution Terminal</h3>
+                        <span class="badge" id="logCount">0 logs</span>
+                    </div>
+                    <div class="terminal-body" id="terminalLog">
+                        <div class="log-entry system"><span class="log-time">[SYSTEM]</span> yani-studio (NVIDIA GB10 GPU) 6시그마 MES 엔진 준비 완료.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js?v=20260801_v230"></script>
+</body>
+</html>
